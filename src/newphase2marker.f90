@@ -105,6 +105,7 @@ do kk = 1 , nmarkers
        tmpr = temp(j,i+1)*mark(kk)%a1 + temp(j+1,i)*mark(kk)%a2 + temp(j+1,i+1)*(1-mark(kk)%a1-mark(kk)%a2)
     endif
 
+
     ! depth below the surface in m
     depth = 0.5*(cord(1,i,2)+cord(1,i+1,2)) - yy
 
@@ -186,7 +187,7 @@ do kk = 1 , nmarkers
         ! phase change pressure
         trpres = -0.3e9 + 2.2e6*tmpr
         press = mantle_density * g * depth
-        if (tmpr < min_eclogite_temp .or. depth < min_eclogite_depth .or. press < trpres) cycle
+        if (tmpr < min_eclogite_temp .or. press < trpres) cycle
         !$OMP critical (change_phase1)
         nphase_counter(iph,j,i) = nphase_counter(iph,j,i) - 1
         nphase_counter(keclg,j,i) = nphase_counter(keclg,j,i) + 1
@@ -237,7 +238,7 @@ do kk = 1 , nmarkers
             ichanged(nchanged) = i
             jchanged(nchanged) = j
             !$OMP end critical (change_phase1)
-            mark(kk)%phase = kmant1
+            mark(kk)%phase = kmant2
         endif
     end select
 

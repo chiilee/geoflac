@@ -187,7 +187,7 @@ OBJS = $(SRCS:.f90=.o)
 EXE = flac
 
 ## Is this a mercurial repository?
-HAS_HG := $(shell hg log -r tip --template '{node}' 2>/dev/null)
+HAS_HG := $(shell git log -r --template '{node}' 2>/dev/null)
 
 ########################################################################
 ## actions
@@ -216,17 +216,17 @@ ifneq (HAS_HG),)
 	@echo >> snapshot.diff
 	@echo >> snapshot.diff
 	@echo '==== Summary of the code ====' >> snapshot.diff
-	@hg summary >> snapshot.diff
-	@echo >> snapshot.diff
+	@git log >> snapshot.diff
+	@echo >>log snapshot.diff
 	@echo >> snapshot.diff
 	@echo '== Code modification (not checked-in) ==' >> snapshot.diff
-	@hg diff >> snapshot.diff
+	@git diff >> snapshot.diff
 	@echo >> snapshot.diff
 	@echo >> snapshot.diff
 	@echo '== Code modification (checked-in but not public) ==' >> snapshot.diff
-	@hg log --patch -r "not public()" >> snapshot.diff
+	@git log >> snapshot.diff
 else
-	@echo \'hg\' is not in path, cannot take code snapshot. >> snapshot.diff
+	@echo \'git\' is not in path, cannot take code snapshot. >> snapshot.diff
 endif
 
 

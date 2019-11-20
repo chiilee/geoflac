@@ -111,7 +111,6 @@ class Flac(object):
         self._reshape_elemental_fields(density)
         return density
 
-
     def read_strain(self, frame):
         columns = 1
         f = open('exx.0')
@@ -432,7 +431,8 @@ def printing(*args, **kwd):
     stream = kwd.get('stream')
     if stream == None:
         stream = sys.stdout
-    elif isinstance(stream, (str, unicode)):
+    #elif isinstance(stream, (str, unicode)):
+    elif isinstance(stream, str):
         filename = stream
         stream = open(filename, 'w')
 

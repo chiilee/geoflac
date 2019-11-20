@@ -2,6 +2,7 @@
 
 '''Convert the binary output of flac to VTK (vts) files.
 '''
+
 from __future__ import print_function
 import sys, os
 import zlib, base64
@@ -27,8 +28,8 @@ def main(path, start=1, end=-1):
         end = fl.nrec
 
     for i in range(start, end+1):
-        print('Writing record #%d, model time=%.3e' % (i, fl.time[i-1]), end='\r')
-        sys.stdout.flush()
+        print ('Writing record #%d, model time=%.3e' % (i, fl.time[i-1]), end='\r')
+	sys.stdout.flush()
         fvts = open('flac.%06d.vts' % i, 'w')
         vts_header(fvts, nex, nez, fl.time[i-1], fl.steps[i-1])
 
@@ -57,16 +58,17 @@ def main(path, start=1, end=-1):
         srat = a
         vts_dataarray(fvts, a.swapaxes(0,1), 'Strain rate')
 
+
         a = fl.read_eII(i)
         eii = a
         vts_dataarray(fvts, a.swapaxes(0,1), 'eII')
 
+        a = fl.read_density(i)
+        vts_dataarray(fvts, a.swapaxes(0,1), 'Density')
+
         exx, ezz, exz = fl.read_strain(i)
         e1 = compute_p_axis(exx, ezz, exz)
         vts_dataarray(fvts, e1.swapaxes(0,1), 'Strain 1-axis', 3)
-
-        a = fl.read_density(i)
-        vts_dataarray(fvts, a.swapaxes(0,1), 'Density')
 
         a = fl.read_aps(i)
         vts_dataarray(fvts, a.swapaxes(0,1), 'Plastic strain')
@@ -121,8 +123,6 @@ def main(path, start=1, end=-1):
 
         vts_footer(fvts)
         fvts.close()
-
-    print()
     return
 
 
@@ -133,7 +133,7 @@ def compute_p_axis(sxx, szz, sxz):
     zl = mag - 0.5*(sxx - szz)
     tiny = 1e-40  # small number to prevent overflow upon division
     tangentl = np.hypot(xl, zl) + tiny
-    
+
     # VTK requires vector field (velocity, coordinate) has 3 components.
     # Allocating a 3-vector tmp array for VTK data output.
     nx, nz = sxx.shape
