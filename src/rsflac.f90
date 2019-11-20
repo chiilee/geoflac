@@ -80,6 +80,10 @@ open (1,file='temp.rs',access='direct',recl=nwords*kindr)
 read (1,rec=nrec) temp
 close (1)
 
+!melting history (chii)
+open (1,file='chamber.rs',access='direct',recl=nwords*kindr)
+read (1,rec=nrec) chamber
+close (1)
 
 ! 2-D (nx-1)*(nz-1) arrays - elements defined
 allocate( dum2(nz-1,nx-1) )
@@ -226,7 +230,7 @@ do n = 1, nmarkers
         endif
         ! recording the id of markers belonging to surface elements
         ntopmarker(i) = ntopmarker(i) + 1
-        itopmarker(ntopmarker(i), i) = n + 1
+        itopmarker(ntopmarker(i), i) = n 
     end if
 
     nphase_counter(mark(n)%phase,j,i) = nphase_counter(mark(n)%phase,j,i) + 1
