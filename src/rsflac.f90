@@ -35,6 +35,13 @@ time = rtime
 dt = rdt
 time_t = time
 
+! Read new crust thickness
+open (1,file='newOC.0', status='old')
+read (1, *) newOC
+close (1)
+new_crust_thickness_index = newOC
+
+
 dvol = 0
 
 ! Coordinates and velocities
@@ -259,6 +266,9 @@ call init_bc
 
 ! Inertial masses and time steps (elastic, maxwell and max_thermal)
 call dt_mass
+
+! Melting markers
+meltingmarker(:,:) = 0
 
 return
 end
